@@ -1,0 +1,113 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+
+public class GameClass {
+
+	public static Scanner console = new Scanner(System.in);
+	
+	public static void main(String[] args) throws Exception
+	{
+		
+		Character[] player = new Character[1]; //declared as an array to be able to pass as a reference variable
+		ArrayList<Item> items = new ArrayList<Item>();
+		Map map[] = new Map[1]; //declared as an array to be able to pass as a reference variable
+		boolean hasWon = false;
+		startGame(player, items, map);
+		
+		
+		while(!hasWon)
+		{
+			choice(player, items, map);
+			hasWon = hasWon(items);
+		}
+		
+		player[0].getLocation().setDescription("The witches look at your items with suspicion, but decide to go \nthrough with the incantation of the spell: \n''Take lizard's leg and owlet's wing, \nAnd hair of cat that used to sing. \nIn the cauldron they all shall go; \nStirring briskly, to and fro. \nWhen the color is of a hog, \nAdd eye of newt and toe of frog. \nBubble all i' the charmed pot; \nBubble all 'til good and hot. \nPour the broth into a cup of stone, \nAnd stir it well with a mummy's bone.'' \nYou take the resulting broth offered to you and drink... \nAs the fog clears, you find yourself at a computer terminal; \nyour adventure is at an end.");
+		System.out.println(player[0].getLocation().getDescription());
+		System.out.print("Score: " + player[0].getScore(items));
+	}
+	
+	public static void choice(Character[] c, ArrayList<Item> i, Map[] m) throws Exception
+	{
+		
+		System.out.println(c[0].getLocation().getDescription());
+		String temp = console.nextLine();
+		
+		switch(temp.toUpperCase().charAt(0))
+		{
+		case 'G':
+		case 'M':
+			c[0].move(temp.charAt(temp.indexOf(' ') + 1));
+			break;
+		case 'T':
+			pickUp(c, i);
+			break;
+		case 'D':
+			drop(c, i);
+			break;
+		case 'I':
+			c[0].viewInventory();
+			break;
+		case 'L':
+			c[0].getLocation().look();
+			break;
+		case 'S':
+			System.out.println(c[0].getScore(i));
+			break;
+		case 'Q':
+			System.exit(0);
+			break;
+			default:
+				choice(c, i, m);
+				break;
+		}
+		
+	}
+	
+	public static boolean hasWon(ArrayList<Item> i)
+	{
+		for(Item x: i)
+		{
+			if(x.getLocation().getRoomNumber() != 1)
+				return false;
+		}
+		return true;
+	}
+	
+	public static void pickUp(Character[] c, ArrayList<Item> i)
+	{
+		for(Item x: i)
+		{
+			if(x.getLocation() == c[0].getLocation() && !x.getHeld())
+			{
+				c[0].pickUp(x);
+				x.setHeld(true);
+			}
+		}
+	}
+	
+	public static void drop(Character[] c, ArrayList<Item> i)
+	{
+		for(Item x: i)
+		{
+			if(x.getHeld())
+			{
+				x.setLocation(c[0].getLocation());
+				x.setHeld(false);
+				c[0].drop();
+			}
+		}
+	}
+
+	public static void startGame(Character[] c, ArrayList<Item> i, Map[] m)
+	{
+		c[0] = new Character();
+		m[0] = new Map();
+		i.add(new Item("Hair", m[0].getRoom10()));
+		i.add(new Item("Eye", m[0].getRoom2()));
+		i.add(new Item("Frog Toe", m[0].getRoom7()));
+		i.add(new Item("Leg", m[0].getRoom4()));
+		i.add(new Item("Wing", m[0].getRoom8()));
+		c[0].setLocation(m[0].getRoom1());
+	}
+}
