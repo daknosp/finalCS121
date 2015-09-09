@@ -1,0 +1,88 @@
+
+public class Rooms {
+
+	boolean visited;
+	Rooms east;
+	Rooms west;
+	Rooms north;
+	Rooms south;
+	int roomnumber;
+	String description;
+	
+	public Rooms(String desc, int n)
+	{
+		description = desc;
+		roomnumber = n;
+	}
+	public Rooms(Rooms e, Rooms w, Rooms n, Rooms s, String desc)
+	{
+		visited = false;
+		east = e;
+		west = w;
+		north = n;
+		south = s;
+		description = desc;
+	}
+	
+	public void look()
+	{
+		System.out.println(description);
+	}
+
+	public int getRoomNumber()
+	{
+		return roomnumber;
+	}
+	
+	public boolean getVisited()
+	{
+		return visited;
+	}
+	
+	public void setVisited(boolean v)
+	{
+		this.visited = v;
+	}
+	
+	public Rooms getEast() {
+		return east;
+	}
+
+	public void setEast(Rooms east) {
+		this.east = east;
+	}
+
+	public Rooms getWest() {
+		return west;
+	}
+
+	public void setWest(Rooms west) {
+		this.west = west;
+	}
+
+	public Rooms getNorth() {
+		return north;
+	}
+
+	public void setNorth(Rooms north) {
+		this.north = north;
+	}
+
+	public Rooms getSouth() {
+		return south;
+	}
+
+	public void setSouth(Rooms south) {
+		this.south = south;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	
+}
