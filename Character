@@ -1,0 +1,128 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+
+public class Character {
+
+	int gold;
+	int score;
+	ArrayList<Item> inventory;
+	Rooms location;
+	
+	public static Scanner console = new Scanner(System.in);
+	
+	public Character()
+	{
+		gold = 0;
+		score = 0;
+		inventory = new ArrayList<Item>();
+	}
+	
+	public void move(char direction) throws Exception
+	{
+		
+		try
+		{
+			switch(direction)
+			{
+			case 'e':
+			case 'E':
+				if (location.getEast() == null)
+					throw new Exception();
+				location = location.getEast();
+				break;
+			case 'w':
+			case 'W':
+				if (location.getWest() == null)
+					throw new Exception();
+				location = location.getWest();
+				break;
+			case 'n':
+			case 'N':
+				if (location.getNorth() == null)
+					throw new Exception();
+				location = location.getNorth();
+				break;
+			case 's':
+			case 'S':
+				if (location.getSouth() == null)
+					throw new Exception();
+				location = location.getSouth();
+				break;
+				default:
+					throw new Exception();
+			}
+		} catch(Exception e)
+		{
+			System.out.print("Invalid direction, enter a new direction: ");
+			move(console.nextLine().charAt(0));
+		}
+		if(location.getRoomNumber() == 1)
+			location.setDescription("You are in a dark cave. In the middle, there is a cauldron boiling. \nWith a clasp of thunder, three witches suddenly appear before you. \nThe witches stand before you, glaring; they seem to be expecting something from you.");
+		if(!location.getVisited())
+			score++;
+		location.setVisited(true);
+	}
+	
+	public void viewInventory()
+	{
+		if (inventory != null)
+		for(Item x: inventory)
+		{
+			System.out.println(x.getName());
+		}
+	}
+	
+	public void pickUp(Item i)
+	{
+		inventory.add(i);
+	}
+	
+	public void drop()
+	{
+		inventory.remove(0);
+	}
+	
+	public void addScore1(int p)
+	{
+		score = score + p;
+	}
+
+	public int getGold() {
+		return gold;
+	}
+
+	public void setGold(int gold) {
+		this.gold = gold;
+	}
+
+	public int getScore(ArrayList<Item> i) {
+		int temp = score;
+		for(Item x: i)
+			if(x.getLocation().getRoomNumber()==1)
+				temp++;
+		return temp;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+
+	public ArrayList<Item> getInventory() {
+		return inventory;
+	}
+
+	public void setInventory(ArrayList<Item> inventory) {
+		this.inventory = inventory;
+	}
+
+	public Rooms getLocation() {
+		return location;
+	}
+
+	public void setLocation(Rooms location) {
+		this.location = location;
+	}
+	
+	
+}
